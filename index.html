@@ -1,1 +1,252 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard Monitoring Kinerja Keuangan BPR</title>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:#f4f6f9;
+}
+
+.header{
+    background:#003366;
+    color:white;
+    padding:15px;
+    text-align:center;
+    font-size:24px;
+    font-weight:bold;
+}
+
+.container{
+    padding:15px;
+}
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:15px;
+}
+
+.card{
+    background:white;
+    padding:20px;
+    border-radius:12px;
+    box-shadow:0 2px 5px rgba(0,0,0,0.1);
+}
+
+.card-title{
+    color:#666;
+    font-size:14px;
+}
+
+.card-value{
+    margin-top:10px;
+    font-size:28px;
+    font-weight:bold;
+    color:#003366;
+}
+
+.chart-container{
+    margin-top:20px;
+    background:white;
+    padding:20px;
+    border-radius:12px;
+    box-shadow:0 2px 5px rgba(0,0,0,0.1);
+}
+
+.table-container{
+    margin-top:20px;
+    background:white;
+    padding:20px;
+    border-radius:12px;
+    box-shadow:0 2px 5px rgba(0,0,0,0.1);
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+table th{
+    background:#003366;
+    color:white;
+    padding:10px;
+}
+
+table td{
+    padding:10px;
+    border-bottom:1px solid #ddd;
+    text-align:center;
+}
+
+.good{
+    color:green;
+    font-weight:bold;
+}
+
+.warning{
+    color:red;
+    font-weight:bold;
+}
+
+@media(max-width:768px){
+    .card-value{
+        font-size:22px;
+    }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+    DASHBOARD MONITORING KINERJA KEUANGAN BPR
+</div>
+
+<div class="container">
+
+    <div class="cards">
+
+        <div class="card">
+            <div class="card-title">Total Aset</div>
+            <div class="card-value">Rp 125 M</div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Total Kredit</div>
+            <div class="card-value">Rp 95 M</div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">DPK</div>
+            <div class="card-value">Rp 98 M</div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Laba Tahun Berjalan</div>
+            <div class="card-value">Rp 2,8 M</div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">NPL</div>
+            <div class="card-value">2,15%</div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">CAR</div>
+            <div class="card-value">31,50%</div>
+        </div>
+
+    </div>
+
+    <div class="chart-container">
+        <h3>Perkembangan Laba Bulanan</h3>
+        <canvas id="chartLaba"></canvas>
+    </div>
+
+    <div class="chart-container">
+        <h3>Perkembangan Kredit dan DPK</h3>
+        <canvas id="chartKredit"></canvas>
+    </div>
+
+    <div class="table-container">
+        <h3>Rasio Keuangan</h3>
+        <br>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Indikator</th>
+                    <th>Realisasi</th>
+                    <th>Target</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td>CAR</td>
+                    <td>31,50%</td>
+                    <td>12%</td>
+                    <td class="good">Baik</td>
+                </tr>
+
+                <tr>
+                    <td>NPL</td>
+                    <td>2,15%</td>
+                    <td>≤ 5%</td>
+                    <td class="good">Baik</td>
+                </tr>
+
+                <tr>
+                    <td>ROA</td>
+                    <td>3,25%</td>
+                    <td>2%</td>
+                    <td class="good">Baik</td>
+                </tr>
+
+                <tr>
+                    <td>BOPO</td>
+                    <td>86%</td>
+                    <td>85%</td>
+                    <td class="warning">Perlu Perhatian</td>
+                </tr>
+
+                <tr>
+                    <td>LDR</td>
+                    <td>97%</td>
+                    <td>80%-110%</td>
+                    <td class="good">Baik</td>
+                </tr>
+            </tbody>
+
+        </table>
+    </div>
+
+</div>
+
+<script>
+
+new Chart(document.getElementById('chartLaba'),{
+    type:'bar',
+    data:{
+        labels:['Jan','Feb','Mar','Apr','Mei','Jun'],
+        datasets:[{
+            label:'Laba (Juta Rupiah)',
+            data:[250,280,310,350,400,450]
+        }]
+    }
+});
+
+new Chart(document.getElementById('chartKredit'),{
+    type:'line',
+    data:{
+        labels:['Jan','Feb','Mar','Apr','Mei','Jun'],
+        datasets:[
+            {
+                label:'Kredit',
+                data:[80,82,85,88,92,95]
+            },
+            {
+                label:'DPK',
+                data:[84,87,90,93,95,98]
+            }
+        ]
+    }
+});
+
+</script>
+
+</body>
+</html>
